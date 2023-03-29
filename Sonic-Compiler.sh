@@ -17,8 +17,8 @@ ClangPath=${MainClangZipPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
 mkdir $ClangPath
 rm -rf $ClangPath/*
-wget -q  https://github.com/ZyCromerZ/Clang/releases/download/15.0.0-20220307-release/Clang-15.0.0-20220307.tar.gz -O "Clang-15.0.0-20220307.tar.gz"
-tar -xf Clang-15.0.0-20220307.tar.gz -C $ClangPath
+wget -q  https://github.com/ZyCromerZ/Clang/releases/download/17.0.0-20230328-release/Clang-17.0.0-20230328.tar.gz -O "Clang-17.0.0-20230328.tar.gz"
+tar -xf Clang-17.0.0-20230328.tar.gz -C $ClangPath
 
 mkdir $GCCaPath
 mkdir $GCCbPath
@@ -33,9 +33,9 @@ KERNEL_ROOTDIR=$(pwd) # IMPORTANT ! Fill with your kernel source root directory.
 DEVICE_CODENAME=sweet
 DEVICE_DEFCONFIG=sweet_defconfig
 export KERNEL_NAME=$(cat "arch/arm64/configs/$DEVICE_DEFCONFIG" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
-export KBUILD_BUILD_USER=KuroSeinen
-export KBUILD_BUILD_HOST=XZI-TEAM
-IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz
+export KBUILD_BUILD_USER=Novik-XIV
+export KBUILD_BUILD_HOST=N-XIV
+IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 CLANG_VER="$("$ClangPath"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
 LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
 export KBUILD_COMPILER_STRING="$CLANG_VER with $LLD_VER"
@@ -44,7 +44,7 @@ DATE2=$(date +"%m%d")
 START=$(date +"%s")
 PATH=${ClangPath}/bin:${GCCaPath}/bin:${GCCbPath}/bin:${PATH}
 DTBO=$(pwd)/out/arch/arm64/boot/dtbo.img
-
+DTB=$(pwd)/out/arch/arm64/boot/dtb.img
 # Post Main Information
 tg_post_msg "<b>KernelCompiler</b>%0AKernel Name : <code>${KERNEL_NAME}</code>%0AKernel Version : <code>${KERVER}</code>%0ABuild Date : <code>${DATE}</code>%0ABuilder Name : <code>${KBUILD_BUILD_USER}</code>%0ABuilder Host : <code>${KBUILD_BUILD_HOST}</code>%0ADevice Defconfig: <code>${DEVICE_DEFCONFIG}</code>%0AClang Version : <code>${KBUILD_COMPILER_STRING}</code>%0AClang Rootdir : <code>${ClangPath}</code>%0AKernel Rootdir : <code>${KERNEL_ROOTDIR}</code>"
 
@@ -80,9 +80,10 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
 	exit 1
    fi
-  git clone --depth=1 https://github.com/KuroSeinenbutV2/AnyKernel3 AnyKernel
+  git clone --depth=1 https://github.com/SoniC-XIV/Anykernel3 AnyKernel
 	    cp $IMAGE AnyKernel
         cp $DTBO AnyKernel
+        cp $DTB AnyKernel
 }
 # Push kernel to channel
 function push() {

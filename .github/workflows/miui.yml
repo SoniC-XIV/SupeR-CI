@@ -6,8 +6,8 @@ on: # [push]
     types: [started]
 
 env:
-  TG_CHAT_ID:  ${{ secrets.TG_CHAT_ID }}
-  TG_TOKEN: ${{ secrets.TG_TOKEN }}
+  TG_CHAT_ID:  ${{ secrets.CHAT_ID }}
+  TG_TOKEN: ${{ secrets.BOT_API }}
   TZ: Asia/Jakarta
 
 jobs:
@@ -25,6 +25,6 @@ jobs:
            bash initialize
         - name: Starting build
           run: |
-           git clone --depth=1 https://github.com/KuroSeinenbutV2/Quantum-Kyaru-Sweet -b miui kernel
-           cp build.sh kernel && cd kernel
-           chmod +x build.sh && bash build.sh
+           git clone --depth=1 https://github.com/SoniC-XIV/Linux_Kernel_sm7150 -b master SONIC
+           cp Sonic-Compiler.sh SONIC && cd SONIC
+           chmod +x Sonic-Compiler.sh && bash Sonic-Compiler.sh
