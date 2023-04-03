@@ -25,6 +25,6 @@ jobs:
            bash initialize
         - name: Starting build
           run: |
-           git clone --depth=1 https://github.com/SoniC-XIV/Linux_Kernel_sm7150 -b master SONIC
+           git clone --depth=1 https://github.com/SoniC-XIV/kernel-xiaomi-sweet -b sonic SONIC
            cp Sonic-Compiler.sh SONIC && cd SONIC
            chmod +x Sonic-Compiler.sh && bash Sonic-Compiler.sh
