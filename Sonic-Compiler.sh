@@ -17,15 +17,12 @@ ClangPath=${MainClangZipPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
 mkdir $ClangPath
 rm -rf $ClangPath/*
-wget -q  https://github.com/ZyCromerZ/Clang/releases/download/17.0.0-20230328-release/Clang-17.0.0-20230328.tar.gz -O "Clang-17.0.0-20230328.tar.gz"
-tar -xf Clang-17.0.0-20230328.tar.gz -C $ClangPath
+git clone --depth=1 https://gitlab.com/PixelOS-Devices/playgroundtc.git -b 17 $ClangPath
 
 mkdir $GCCaPath
 mkdir $GCCbPath
-wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/refs/tags/android-12.0.0_r27.tar.gz -O "gcc64.tar.gz"
-tar -xf gcc64.tar.gz -C $GCCaPath
-wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/+archive/refs/tags/android-12.0.0_r27.tar.gz -O "gcc32.tar.gz"
-tar -xf gcc32.tar.gz -C $GCCbPath
+git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+/refs/tags/android-13.0.0_r0.62 $GCCaPath
+git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/+/refs/tags/android-13.0.0_r0.62 $GCCbPath
 
 #Main2
 export TZ="Asia/Jakarta"
@@ -40,7 +37,7 @@ CLANG_VER="$("$ClangPath"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*
 LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
 export KBUILD_COMPILER_STRING="$CLANG_VER with $LLD_VER"
 DATE=$(date +"%F-%S")
-DATE2=SONIC
+VER=SONIC
 START=$(date +"%s")
 PATH=${ClangPath}/bin:${GCCaPath}/bin:${GCCbPath}/bin:${PATH}
 DTBO=$(pwd)/out/arch/arm64/boot/dtbo.img
@@ -109,7 +106,7 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 [$DATE2]$KERNEL_NAME[$DEVICE_CODENAME]${DATE}.zip *
+    zip -r9 [$VER]$KERNEL_NAME[$DEVICE_CODENAME]${DATE}.zip *
     cd ..
 }
 compile

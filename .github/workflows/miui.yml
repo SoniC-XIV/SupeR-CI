@@ -1,4 +1,4 @@
-name: MIUI-Variant
+name: SONIC
 
 on: # [push]
   workflow_dispatch:
