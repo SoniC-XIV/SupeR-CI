@@ -1,0 +1,30 @@
+name: OSS
+
+on: # [push]
+  workflow_dispatch:
+  watch:
+    types: [started]
+
+env:
+  TG_CHAT_ID:  ${{ secrets.CHAT_ID }}
+  TG_TOKEN: ${{ secrets.BOT_API }}
+  TZ: Asia/Jakarta
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:jammy-20211029
+    steps:
+        - name: Checkout
+          uses: actions/checkout@master
+
+        - name: Initialize environment
+          run: |
+           chmod +x initialize
+           bash initialize
+        - name: Starting build
+          run: |
+           git clone --depth=1 https://github.com/SoniC-XIV/kernel-xiaomi-sweet -b sonic-oss SONIC
+           cp sonic-oss.sh SONIC && cd SONIC
+           chmod +x sonic-oss.sh && bash sonic-oss.sh

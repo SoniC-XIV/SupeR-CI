@@ -1,4 +1,4 @@
-name: SONIC
+name: MIUI-BQ
 
 on: # [push]
   workflow_dispatch:
@@ -25,6 +25,6 @@ jobs:
            bash initialize
         - name: Starting build
           run: |
-           git clone --depth=1 https://github.com/SoniC-XIV/kernel-xiaomi-sweet -b master SONIC
-           cp Sonic-Compiler.sh SONIC && cd SONIC
-           chmod +x Sonic-Compiler.sh && bash Sonic-Compiler.sh
+           git clone --depth=1 https://github.com/SoniC-XIV/kernel-xiaomi-sweet -b sonic SONIC
+           cp sonic.sh SONIC && cd SONIC
+           chmod +x sonic.sh && bash sonic.sh

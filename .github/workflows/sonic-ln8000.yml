@@ -1,0 +1,30 @@
+name: MIUI-LN8000
+
+on: # [push]
+  workflow_dispatch:
+  watch:
+    types: [started]
+
+env:
+  TG_CHAT_ID:  ${{ secrets.CHAT_ID }}
+  TG_TOKEN: ${{ secrets.BOT_API }}
+  TZ: Asia/Jakarta
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:jammy-20211029
+    steps:
+        - name: Checkout
+          uses: actions/checkout@master
+
+        - name: Initialize environment
+          run: |
+           chmod +x initialize
+           bash initialize
+        - name: Starting build
+          run: |
+           git clone --depth=1 https://github.com/SoniC-XIV/kernel-xiaomi-sweet -b sonic-ln8000 SONIC
+           cp sonic-ln8000.sh SONIC && cd SONIC
+           chmod +x sonic-ln8000.sh && bash sonic-ln8000.sh
