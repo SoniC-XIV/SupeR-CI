@@ -52,16 +52,25 @@ cd ${KERNEL_ROOTDIR}
 make -j$(nproc) O=out ARCH=arm64 $DEVICE_DEFCONFIG
 make -j$(nproc) ARCH=arm64 O=out \
     LD_LIBRARY_PATH="${ClangPath}/lib64:${LD_LIBRARY_PATH}" \
-    CC=${ClangPath}/bin/clang \
-    AR=${ClangPath}/bin/llvm-ar \
+    LLVM=1 \
+    LLVM_IAS=1 \
     NM=${ClangPath}/bin/llvm-nm \
+    CXX=${ClangPath}/bin/clang++ \
+    AR=${ClangPath}/bin/llvm-ar \
     LD=${ClangPath}/bin/ld.lld \
-    STRIP=${ClangPath}/bin/llvm-strip \
     OBJCOPY=${ClangPath}/bin/llvm-objcopy \
     OBJDUMP=${ClangPath}/bin/llvm-objdump \
-    CLANG_TRIPLE=aarch64-linux-gnu- \
+    OBJSIZE=${ClangPath}/bin/llvm-size \
+    READELF=${ClangPath}/bin/llvm-readelf \
+    STRIP=${ClangPath}/bin/llvm-strip \
+    CC=${ClangPath}/bin/clang \
     CROSS_COMPILE=aarch64-linux-android- \
     CROSS_COMPILE_ARM32=arm-linux-androideabi- \
+    CLANG_TRIPLE=aarch64-linux-gnu- \
+    HOSTAR=${ClangPath}/bin/llvm-ar \
+    HOSTLD=${ClangPath}/bin/ld.lld \
+    HOSTCC=${ClangPath}/bin/clang \
+    HOSTCXX=${ClangPath}/bin/clang++ \
     2>&1 | tee error.log
 
    if ! [ -a "$IMAGE" ]; then
