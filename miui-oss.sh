@@ -21,8 +21,8 @@ git clone --depth=1 https://gitlab.com/PixelOS-Devices/playgroundtc.git -b 17 $C
 
 mkdir $GCCaPath
 mkdir $GCCbPath
-git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+/refs/tags/android-13.0.0_r0.62 $GCCaPath
-git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/+/refs/tags/android-13.0.0_r0.62 $GCCbPath
+git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+/refs/tags/android-13.0.0_r0.102 $GCCaPath
+git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/+/refs/tags/android-13.0.0_r0.102 $GCCbPath
 
 #Main2
 export TZ="Asia/Jakarta"
@@ -30,14 +30,14 @@ KERNEL_ROOTDIR=$(pwd) # IMPORTANT ! Fill with your kernel source root directory.
 DEVICE_CODENAME=SWEET
 DEVICE_DEFCONFIG=sweet_defconfig
 export KERNEL_NAME=$(cat "arch/arm64/configs/$DEVICE_DEFCONFIG" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
-export KBUILD_BUILD_USER=NoviK
-export KBUILD_BUILD_HOST=N-XIV
-IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
+export KBUILD_BUILD_USER=Lek_N-XIV
+export KBUILD_BUILD_HOST=ExSoniC
+IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz
 CLANG_VER="$("$ClangPath"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
 LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
 export KBUILD_COMPILER_STRING="$CLANG_VER with $LLD_VER"
 DATE=$(date +"%F-%S")
-VER=OSS-BQ
+VER=OSS-V2
 START=$(date +"%s")
 PATH=${ClangPath}/bin:${GCCaPath}/bin:${GCCbPath}/bin:${PATH}
 DTBO=$(pwd)/out/arch/arm64/boot/dtbo.img
@@ -49,21 +49,21 @@ tg_post_msg "<b>KernelCompiler</b>%0AKernel Name : <code>${KERNEL_NAME}</code>%0
 compile(){
 tg_post_msg "<b>KernelCompiler:</b><code>Compilation has started</code>"
 cd ${KERNEL_ROOTDIR}
-export HASH_HEAD=$(git rev-parse --short HEAD)
-export COMMIT_HEAD=$(git log --oneline -1)
 make -j$(nproc) O=out ARCH=arm64 $DEVICE_DEFCONFIG
 make -j$(nproc) ARCH=arm64 O=out \
     LD_LIBRARY_PATH="${ClangPath}/lib64:${LD_LIBRARY_PATH}" \
-    CC=${ClangPath}/bin/clang \
+    LLVM=1 \
+    LLVM_IAS=1 \
     NM=${ClangPath}/bin/llvm-nm \
     CXX=${ClangPath}/bin/clang++ \
     AR=${ClangPath}/bin/llvm-ar \
     LD=${ClangPath}/bin/ld.lld \
-    STRIP=${ClangPath}/bin/llvm-strip \
     OBJCOPY=${ClangPath}/bin/llvm-objcopy \
     OBJDUMP=${ClangPath}/bin/llvm-objdump \
     OBJSIZE=${ClangPath}/bin/llvm-size \
     READELF=${ClangPath}/bin/llvm-readelf \
+    STRIP=${ClangPath}/bin/llvm-strip \
+    CC=${ClangPath}/bin/clang \
     CROSS_COMPILE=aarch64-linux-android- \
     CROSS_COMPILE_ARM32=arm-linux-androideabi- \
     CLANG_TRIPLE=aarch64-linux-gnu- \
@@ -77,7 +77,7 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
 	exit 1
    fi
-  git clone --depth=1 https://github.com/SoniC-XIV/Anykernel3 AnyKernel
+  git clone --depth=1 https://github.com/SoniC-XIV/Anykernel3 -b master AnyKernel
 	    cp $IMAGE AnyKernel
         cp $DTBO AnyKernel
         cp $DTB AnyKernel

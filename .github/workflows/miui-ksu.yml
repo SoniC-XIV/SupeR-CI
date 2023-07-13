@@ -1,4 +1,4 @@
-name: OSS-LN8000
+name: MIUI-KSU-V2
 
 on: # [push]
   workflow_dispatch:
@@ -25,6 +25,6 @@ jobs:
            bash initialize
         - name: Starting build
           run: |
-           git clone --depth=1 https://github.com/SoniC-XIV/kernel-xiaomi-sweet -b sonic-oss-ln8000 SONIC
-           cp sonic-oss-ln8000.sh SONIC && cd SONIC
-           chmod +x sonic-oss-ln8000.sh && bash sonic-oss-ln8000.sh
+           git clone --depth=1 https://github.com/SoniC-XIV/SupeRSoniC_V2 -b SoniC-13-KSU SONIC
+           cp miui-ksu.sh SONIC && cd SONIC
+           chmod +x miui-ksu.sh && bash miui-ksu.sh
