@@ -1,0 +1,30 @@
+name: TEST-V3
+
+on: # [push]
+  workflow_dispatch:
+  watch:
+    types: [started]
+
+env:
+  TG_CHAT_ID:  ${{ secrets.CHAT_ID }}
+  TG_TOKEN: ${{ secrets.BOT_API }}
+  TZ: Asia/Jakarta
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:jammy-20211029
+    steps:
+        - name: Checkout
+          uses: actions/checkout@master
+
+        - name: Initialize environment
+          run: |
+           chmod +x initialize
+           bash initialize
+        - name: Starting build
+          run: |
+           git clone --depth=1 https://github.com/SoniC-XIV/SupeRSoniC_V2 -b Master SONIC
+           cp test.sh SONIC && cd SONIC
+           chmod +x test.sh && bash test.sh
