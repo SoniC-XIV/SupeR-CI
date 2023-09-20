@@ -1,4 +1,4 @@
-name: MIUI-OSS-KSU-V2
+name: MIUI-A13
 
 on: # [push]
   workflow_dispatch:
@@ -25,6 +25,6 @@ jobs:
            bash initialize
         - name: Starting build
           run: |
-           git clone --depth=1 https://github.com/SoniC-XIV/SupeRSoniC_V2 -b SoniC-13-OSS-KSU SONIC
-           cp miui-oss-ksu.sh SONIC && cd SONIC
-           chmod +x miui-oss-ksu.sh && bash miui-oss-ksu.sh
+           git clone --depth=1 https://github.com/SoniC-XIV/kernel_xiaomi_sm6150 -b 13 SONIC
+           cp miui-a13.sh SONIC && cd SONIC
+           chmod +x miui-a13.sh && bash miui-a13.sh

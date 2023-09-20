@@ -1,4 +1,4 @@
-name: TEST-V3
+name: OSS-A13-LN
 
 on: # [push]
   workflow_dispatch:
@@ -25,6 +25,6 @@ jobs:
            bash initialize
         - name: Starting build
           run: |
-           git clone --depth=1 https://github.com/SoniC-XIV/SupeRSoniC_V2 -b Master SONIC
-           cp test.sh SONIC && cd SONIC
-           chmod +x test.sh && bash test.sh
+           git clone --depth=1 https://github.com/SoniC-XIV/kernel_xiaomi_sm6150 -b 13-LN-OSS SONIC
+           cp oss-a13-ln.sh SONIC && cd SONIC
+           chmod +x oss-a13-ln.sh && bash oss-a13-ln.sh
