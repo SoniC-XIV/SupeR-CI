@@ -1,4 +1,4 @@
-name: MIUI-A13-KSU
+name: SWEET-14
 
 on: # [push]
   workflow_dispatch:
@@ -25,6 +25,6 @@ jobs:
            bash initialize
         - name: Starting build
           run: |
-           git clone --depth=1 https://github.com/SoniC-XIV/kernel_xiaomi_sm6150 -b 13-KSU SONIC
-           cp miui-a13-ksu.sh SONIC && cd SONIC
-           chmod +x miui-a13-ksu.sh && bash miui-a13-ksu.sh
+           git clone --depth=1 https://github.com/SoniC-XIV/Xiaomi-Kernel-SM6150 -b Project SONIC
+           cp sweet-14.sh SONIC && cd SONIC
+           chmod +x sweet-14.sh && bash sweet-14.sh
