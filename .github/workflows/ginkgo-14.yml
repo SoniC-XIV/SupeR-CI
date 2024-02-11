@@ -25,6 +25,6 @@ jobs:
            bash initialize
         - name: Starting build
           run: |
-           git clone https://github.com/SoniC-XIV/xiaomi_kernel_ginkgo -b Project SONIC
+           git clone --depth=1 https://github.com/SoniC-XIV/xiaomi_kernel_ginkgo -b Project SONIC
            cp ginkgo-14.sh SONIC && cd SONIC
            chmod +x ginkgo-14.sh && bash ginkgo-14.sh
