@@ -17,7 +17,7 @@ ClangPath=${MainClangZipPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
 mkdir $ClangPath
 rm -rf $ClangPath/*
-git clone --depth=1 https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 $ClangPath
+git clone --depth=1 https://gitlab.com/PixelOS-Devices/playgroundtc.git -b 17 $ClangPath
 
 mkdir $GCCaPath
 mkdir $GCCbPath
