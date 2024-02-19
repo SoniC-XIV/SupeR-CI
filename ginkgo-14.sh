@@ -17,7 +17,7 @@ ClangPath=${MainClangZipPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
 mkdir $ClangPath
 rm -rf $ClangPath/*
-git clone --depth=1 https://gitlab.com/Panchajanya1999/azure-clang -b main $ClangPath
+git clone --depth=1 https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 $ClangPath
 
 mkdir $GCCaPath
 mkdir $GCCbPath
