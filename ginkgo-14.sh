@@ -17,12 +17,12 @@ ClangPath=${MainClangZipPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
 mkdir $ClangPath
 rm -rf $ClangPath/*
-git clone --depth 1 https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 $ClangPath
+git clone --depth=1 https://gitlab.com/Panchajanya1999/azure-clang -b main $ClangPath
 
 mkdir $GCCaPath
 mkdir $GCCbPath
-git clone --depth=1 -b lineage-19.1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9.git $GCCaPath
-git clone --depth=1 -b lineage-19.1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9.git $GCCbPath
+git clone --depth=1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9.git -b lineage-19.1 $GCCaPath
+git clone --depth=1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9.git -b lineage-19.1 $GCCbPath
 
 #Main2
 export TZ="Asia/Jakarta"
@@ -52,17 +52,25 @@ cd ${KERNEL_ROOTDIR}
 make -j$(nproc) O=out ARCH=arm64 $DEVICE_DEFCONFIG
 make -j$(nproc) ARCH=arm64 O=out \
     LD_LIBRARY_PATH="${ClangPath}/lib64:${LD_LIBRARY_PATH}" \
+    LLVM=1 \
+    LLVM_IAS=1 \
     NM=${ClangPath}/bin/llvm-nm \
+    CXX=${ClangPath}/bin/clang++ \
     AR=${ClangPath}/bin/llvm-ar \
-    AS=${ClangPath}/llvm-as \
     LD=${ClangPath}/bin/ld.lld \
     OBJCOPY=${ClangPath}/bin/llvm-objcopy \
     OBJDUMP=${ClangPath}/bin/llvm-objdump \
+    OBJSIZE=${ClangPath}/bin/llvm-size \
+    READELF=${ClangPath}/bin/llvm-readelf \
     STRIP=${ClangPath}/bin/llvm-strip \
     CC=${ClangPath}/bin/clang \
-    CROSS_COMPILE=${ClangPath}/aarch64-linux-android- \
-    CROSS_COMPILE_ARM32=${ClangPath}/arm-linux-androideabi- \
-    CLANG_TRIPLE=aarch64-linux-gnu- Image.gz-dtb dtbo.img
+    CROSS_COMPILE=aarch64-linux-android- \
+    CROSS_COMPILE_ARM32=arm-linux-androideabi- \
+    CLANG_TRIPLE=aarch64-linux-gnu- \
+    HOSTAR=${ClangPath}/bin/llvm-ar \
+    HOSTLD=${ClangPath}/bin/ld.lld \
+    HOSTCC=${ClangPath}/bin/clang \
+    HOSTCXX=${ClangPath}/bin/clang++ \
     2>&1 | tee error.log
 
    if ! [ -a "$IMAGE" ]; then
